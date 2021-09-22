@@ -1,5 +1,7 @@
 import NumbersLetters
+import PostFija
 numeros= NumbersLetters.NumberLetter()
+calculator=PostFija.PostFija()
 def menu():
     print('1.-Expresiones aritmeticas')
     print("2.-Exprecion logica")
@@ -11,7 +13,9 @@ def SelectOption():
     menu()
     opc=int(input())
     if opc==1:
-
+        print('Ingrese la operacion')
+        resultado=calculator.SolveStack(calculator.Solve(input())) 
+        print('El resultado es', resultado)
         pass
     elif opc==2:
         pass
@@ -29,3 +33,4 @@ def SelectOption():
 
 while(SelectOption()!=False):
     pass
+
