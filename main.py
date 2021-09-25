@@ -13,8 +13,7 @@ def SelectOption():
     menu()
     opc=int(input())
     if opc==1:
-        print('Ingrese la operacion')
-        resultado=calculator.SolveStack(calculator.Solve(input())) 
+        resultado=calculator.SolveStack(calculator.Solve('(9+22.12)*1/4^2-2')) 
         print('El resultado es', resultado)
         pass
     elif opc==2:

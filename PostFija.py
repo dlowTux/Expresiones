@@ -9,15 +9,33 @@ class PostFija:
                 }
     def IsNumber(self,x):
         try:
-            int(x)
+            float(x)
             return True
         except:
             return False
 
+    def MakeFormat(self,line):
+        operadores=['+','-','*','/','^','(',')']
+        lineformat=[]
+        cadenaaux=""
+        for x in line:
+            if x in operadores:
+                if cadenaaux!="":
+                    lineformat.append(cadenaaux)
+                    cadenaaux=""
+                lineformat.append(x)
+
+            else:
+                cadenaaux+=x
+        if len(cadenaaux)>0:
+            lineformat.append(cadenaaux)
+        print(lineformat)
+        return lineformat
+
     def Solve(self,line):
         pila=[]
         result=[]
-        for x in line:
+        for x in self.MakeFormat(line):
             if self.IsNumber(x)==False:
                 if len(pila)==0:
                     pila.append(x)
