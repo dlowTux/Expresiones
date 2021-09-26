@@ -64,53 +64,82 @@ class Logicas:
         table=self.GenerateTable(colums)
         #We can get throght by the line
         line=line.replace('<->','*').replace('->','-')
-        result=[]
-        file=[]
-        parenthesis=['(','[']
-        closeparenthesis=[')',']']
-
-        #Algotimo
-        for x in line:
-            if x in parenthesis:
-                file.append(x)
-            elif x.isalpha():
-                result.append(x)
-            elif x in self.operations:
-                if len(file)==0:
-                    file.append(x)
-                elif file[len(file)-1] in parenthesis:
-                    file.append(x)
+        line=line.replace(' ','').replace('(','').replace(')','').replace('[','').replace(']','')
+        self.Evaluate(table,line)
+    def Evaluate(self,table,line):
+        operacion=""
+        for t in table:
+            for x in line:
+                if x not in self.operations:
+                     operacion+=str(t[self.letter[x]])[0]
                 else:
-                    #Vacia la fila
-                    result.append(file.pop())
-                    file.append(x)
-            elif x in closeparenthesis:
-                #Vaciar hasta que encontremos su pareja
-                
-                result.append(file.pop())
-                if len(file)>0:
-                    file.pop()
-        result=result+file
-        print(result)
+                    operacion+=x
+            self.MakeOperation(operacion)
+            operacion=""
+    
+    def MakeOperation(self,operacion):
+        cadena=list(operacion)
+        #Realizando primero las negadas
+        while '~' in cadena:
+            for x in range(len(cadena)):
+                if cadena[x]=='~':
+                    resultdo=self.Negada(cadena[x+1])
+                    cadena[x]=resultdo
+                    cadena[x+1]=None
+        cadena=self.CleanStack(cadena)
+        
+        while len(cadena)>1:
+            i=0
+            for x in cadena:
+                if x in self.operations:
+                    auxresult=self.DoOperation(cadena,i)
+                    cadena[i]=auxresult
+                    cadena[i-1]=None
+                    cadena[i+1]=None
+                    cadena=self.CleanStack(cadena)
+                    break
+                i+=1
+            pass
+        print(cadena)
+    def DoOperation(self,cadena,x):
+        if cadena[x]=='-':
+            if cadena[x-1]=='T' and cadena[x+1]=='F':
+                return 'F'
+            else:
+                return 'T'
+        if cadena[x]=='*':
+            if cadena[x-1]==cadena[x+1]:
+                return 'T'
+            else:
+                return 'F'
+
+        if cadena[x]=='^':
+            if cadena[x-1]=='T' and cadena[x+1]=='T':
+                return 'T'
+            else:
+                return 'F'
+        if cadena[x]=='+':
+            if cadena[x-1]=='F' and cadena[x+1]=='F':
+                return 'F'
+            else:
+                return 'T'
+
+    def CleanStack(self,cadena):
+        auxcadena=[]
+        for x in cadena:
+            if x!=None:
+                auxcadena.append(x)
+        return auxcadena
+
 
                     
-                
-        
-
-        
-
-string="[(p<->q)^p]->q"
-Logicas().Solve(string)
+    def Negada(self,valor):
+        if valor=='T':
+            return 'F'
+        else:
+            return 'T'
 
 
-#p q -> q ~ r v r q -> <->
-'''
-Algoritmo
-si el elemento es ( [ se añade a una fila
-si el elemento es un letra se añade al resultado
-si el elemento es un operador se verifa en el fila no esten elementos si ya hay
-elementos se vacia y se añade el nuevo elemento solo si el ultimo en la fila no es un parenthesis 
-si es un parentesis solo se añade a la fila
-si el elemento es ) ] se tiene q vaciar todos los elementos que esten entre () o []
+    
 
-'''
+

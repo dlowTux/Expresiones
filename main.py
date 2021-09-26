@@ -1,7 +1,9 @@
 import NumbersLetters
 import PostFija
+import Logicas
 numeros= NumbersLetters.NumberLetter()
 calculator=PostFija.PostFija()
+logica=Logicas.Logicas()
 def menu():
     print('1.-Expresiones aritmeticas')
     print("2.-Exprecion logica")
@@ -17,6 +19,10 @@ def SelectOption():
         print('El resultado es', resultado)
         pass
     elif opc==2:
+        string="[(p->q)^p]->q"
+        print(string)
+        logica.Solve(string)
+
         pass
     elif opc==3:
         print('Ingresa la cadena')
