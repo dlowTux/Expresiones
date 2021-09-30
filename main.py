@@ -19,7 +19,8 @@ def SelectOption():
         print('El resultado es', resultado)
         pass
     elif opc==2:
-        string="[(p->q)^p]->q"
+        string="~([(p->q)^p]->q)"
+        #string="[(p->q)^(q->r)]<->(p->r)"
         print(string)
         logica.Solve(string)
 
